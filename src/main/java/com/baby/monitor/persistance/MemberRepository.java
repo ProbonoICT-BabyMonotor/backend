@@ -8,4 +8,6 @@ public interface MemberRepository {
     MemberVO save(MemberVO member);
 
     MemberVO findByMemberId(String memberId);
+
+
 }
