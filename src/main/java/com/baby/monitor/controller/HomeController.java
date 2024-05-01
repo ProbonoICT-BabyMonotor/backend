@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,34 @@ public class HomeController {
 
     public HomeController(MemberService memberService){
         this.memberService = memberService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody MemberVO member) throws Exception {
+        logger.info("[로그인 요청] ID : " + member.getMemberId());
+
+        // 성공적으로 로그인 했을때.
+        try{
+            MemberVO full_member = memberService.loginMember(member);
+            full_member.setMemberPassword("secret");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("정상적으로 로그인 되었습니다.")
+                    .data(full_member)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+
+        // ID 또는 비밀번호가 일치하지 않음, IllegalArgumentException 발생
+        catch (IllegalArgumentException e){
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.FORBIDDEN.value())
+                    .httpStatus(HttpStatus.FORBIDDEN)
+                    .message(e.getMessage())
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
     }
 
     @RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
