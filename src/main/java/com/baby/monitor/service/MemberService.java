@@ -2,23 +2,19 @@ package com.baby.monitor.service;
 
 import com.baby.monitor.domain.MemberVO;
 import com.baby.monitor.persistance.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
-
 
     /***
      * 회원 가입하는 메소드 [비밀번호 인코딩]
