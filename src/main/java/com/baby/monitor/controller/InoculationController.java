@@ -1,5 +1,7 @@
 package com.baby.monitor.controller;
 
+import com.baby.monitor.DTO.InoculationDTO;
+import com.baby.monitor.domain.InoculationMemberVO;
 import com.baby.monitor.domain.RestResponse;
 import com.baby.monitor.service.InoculationService;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -25,22 +27,24 @@ public class InoculationController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @GetMapping("/list")
-    public ResponseEntity FindInoculationList() throws Exception {
-        logger.info("[접종 해야 할 리스트 출력]");
-        HashMap<String, List> ListInoculation = inoculationService.findInoculationList();
+    public ResponseEntity FindInoculationList(@RequestParam int memberNumber) throws Exception {
+        logger.info("[아기 접종 이력 조회]");
+        List<InoculationMemberVO> ListInoculation = inoculationService.findInoculationMember(memberNumber);
+
+        List<InoculationDTO> ListDTO = inoculationService.changeTODTO(ListInoculation);
 
         // 성공적으로 로그인 했을때.
         try{
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
-                    .message("예방 접종 해야 할 리스트 입니다.")
-                    .data(ListInoculation)
+                    .message("아기 접종 이력 조회")
+                    .data(ListDTO)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
 
-        // ID 또는 비밀번호가 일치하지 않음, IllegalArgumentException 발생
+        // 이외 예상치 못한 오류
         catch (Exception e){
             logger.info(e.toString());
             restResponse = RestResponse.builder()
