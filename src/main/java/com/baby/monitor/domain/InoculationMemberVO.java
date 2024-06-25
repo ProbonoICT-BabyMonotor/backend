@@ -3,16 +3,19 @@ package com.baby.monitor.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "inoculation_list")
+@Table(name = "inoculation_member")
 public class InoculationMemberVO {
+    private static final Logger logger = LoggerFactory.getLogger(InoculationMemberVO.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int inoculationMemberNumber;
@@ -28,6 +31,7 @@ public class InoculationMemberVO {
     public InoculationMemberVO(int inoculationNumber, int memberNumber, LocalDate BabyBirth, int date, String prieod){
         this.inoculationNumber = inoculationNumber;
         this.memberNumber = memberNumber;
+
         if (inoculationNumber == 1){
             this.inoculationIstrue = true;
         } else {
@@ -50,10 +54,13 @@ public class InoculationMemberVO {
     public LocalDate setFutureDate(LocalDate babyBirth, int Date, String prieod){
 
         if (prieod == "week"){
-            babyBirth.plus(Date, ChronoUnit.WEEKS);
+            babyBirth = babyBirth.plusWeeks(Date);
         } else {
-            babyBirth.plus(Date, ChronoUnit.MONTHS);
+            babyBirth = babyBirth.plusMonths(Date);
         }
+        logger.info(babyBirth.toString());
+        logger.info(String.valueOf(Date));
+        logger.info(prieod);
         return babyBirth;
     }
 

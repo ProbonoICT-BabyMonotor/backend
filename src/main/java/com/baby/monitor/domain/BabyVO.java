@@ -20,4 +20,13 @@ public class BabyVO {
     private LocalDate babyBirth;
     private Float babyWeight;
 
+    public BabyVO(String babyName, LocalDate babyBirth, Float babyWeight){
+        this.babyName = babyName;
+        this.babyBirth = babyBirth;
+        this.babyWeight = babyWeight;
+    }
+
+    public BabyVO() {
+
+    }
 }

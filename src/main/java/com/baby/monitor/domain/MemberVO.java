@@ -28,8 +28,22 @@ public class MemberVO {
 
     private String memberGender;
 
+    public MemberVO() {
+
+    }
+
+    public MemberVO(String memberName, String memberId, String memberPhone, String memberPassword, LocalDate memberBirth, String memberGender){
+        this.memberName = memberName;
+        this.memberId = memberId;
+        this.memberPhone = memberPhone;
+        this.memberPassword = memberPassword;
+        this.memberBirth = memberBirth;
+        this.memberGender = memberGender;
+    }
+
     public void setMemberBirth(String memberBirth)  {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.memberBirth = LocalDate.parse(memberBirth, formatter);
     }
+
 }
