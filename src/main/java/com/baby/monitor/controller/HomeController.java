@@ -66,7 +66,7 @@ public class HomeController {
             MemberVO signUpMember = memberService.signUpMember(member);
             baby.setMemberNumber(signUpMember.getMemberNumber());
 
-            BabyVO signUpBaby = babyService.signUpBaby(baby);
+            babyService.signUpBaby(baby);
             signUpMember.setMemberPassword("secret");
 
             // [DB] inoculation_member Table 초기화
@@ -79,6 +79,7 @@ public class HomeController {
                     .data(signUpMember)
                     .build();
         }
+
         // 회원가입 실패 시, (중복된 아이디가 존재할 때)
         catch (IllegalStateException e){
             restResponse = RestResponse.builder()

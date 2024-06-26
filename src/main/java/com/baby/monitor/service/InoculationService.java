@@ -28,7 +28,13 @@ public class InoculationService {
      * @return
      */
     public List<InoculationMemberVO> findInoculationMember(int memberNumber){
-        return (List<InoculationMemberVO>) inoculationMemberJPA.findAll();
+        List<InoculationMemberVO> inoMember = inoculationMemberJPA.findAllByMemberNumber(memberNumber);
+
+        if (inoMember != null){
+            return inoMember;
+        } else {
+            throw new IllegalArgumentException("일치하는 회원번호가 없습니다.");
+        }
 
     }
 
@@ -40,6 +46,9 @@ public class InoculationService {
      */
     public boolean updateInoculationStatus(InoculationMemberVO inoculationMember){
         InoculationMemberVO temp = inoculationMemberJPA.findByMemberNumberAndInoculationNumber(inoculationMember.getMemberNumber(), inoculationMember.getInoculationNumber());
+        if (temp == null){
+                throw new IllegalArgumentException("일치하는 데이터가 존재하지 않습니다.");
+        }
         inoculationMember.setInoculationMemberNumber(temp.getInoculationMemberNumber());
 
         // Update 진행
@@ -78,12 +87,13 @@ public class InoculationService {
     public List<InoculationDTO> changeTODTO(List<InoculationMemberVO> ListInoculation){
         // API 전송용 DTO로 변경
         List<InoculationDTO> listInoculationDTO = new ArrayList<>();
-        int count = 1;
+
+        // 06-27 inoculationNumber를 1번 부터 indexing -> 기존의 번호 전달
+        // 추후 업데이트에 사용하기 위함
         for (InoculationMemberVO i : ListInoculation){
             String name = inoculationJPA.findByInoculationNumber(i.getInoculationNumber()).getInoculationName();
-            InoculationDTO tempDTO = new InoculationDTO(count, name, i.isInoculationIstrue(), i.getInoculationDate());
+            InoculationDTO tempDTO = new InoculationDTO(i.getInoculationNumber(), name, i.isInoculationIstrue(), i.getInoculationDate());
             listInoculationDTO.add(tempDTO);
-            count += 1;
         }
         return listInoculationDTO;
     }

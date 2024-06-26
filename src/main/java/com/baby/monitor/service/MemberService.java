@@ -43,10 +43,16 @@ public class MemberService {
         String memberId = member.getMemberId();
         MemberVO DB_member = memberRepository.findByMemberId(memberId);
 
+        // 아이디 미 일치
+        if (DB_member == null){
+            throw new IllegalArgumentException("[로그인] 아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 비밀번호 미 일치
         if (passwordEncoder.matches(member.getMemberPassword(), DB_member.getMemberPassword())) {
             return DB_member;
         } else {
-            throw new IllegalArgumentException("[로그인] 전화번호 또는 이메일이 일치하지 않습니다.");
+            throw new IllegalArgumentException("[로그인] 아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
 }
