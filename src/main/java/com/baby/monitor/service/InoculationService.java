@@ -32,6 +32,21 @@ public class InoculationService {
 
     }
 
+
+    /**
+     * 접종 내역 업데이트
+     * @param inoculationMember
+     * @return
+     */
+    public boolean updateInoculationStatus(InoculationMemberVO inoculationMember){
+        InoculationMemberVO temp = inoculationMemberJPA.findByMemberNumberAndInoculationNumber(inoculationMember.getMemberNumber(), inoculationMember.getInoculationNumber());
+        inoculationMember.setInoculationMemberNumber(temp.getInoculationMemberNumber());
+
+        // Update 진행
+        inoculationMemberJPA.save(inoculationMember);
+        return true;
+    }
+
     /**
      * 접종 이력들 초기 세팅하기.
      */
@@ -52,6 +67,14 @@ public class InoculationService {
         return inoculationMembers;
     }
 
+    /**
+     * DB용 데이터 HTTP DTO로 변경
+     * inoculationMemberNumber - 필요 없음
+     * inoculationNumber - 이 Number을 통해 실제 접종 이름이 필요함
+     * memberNumber - 따위 필요 없음
+     * @param ListInoculation ( / inoculationNumber / inoculationDate)
+     * @return
+     */
     public List<InoculationDTO> changeTODTO(List<InoculationMemberVO> ListInoculation){
         // API 전송용 DTO로 변경
         List<InoculationDTO> listInoculationDTO = new ArrayList<>();

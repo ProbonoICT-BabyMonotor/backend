@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class InoculationController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @GetMapping("/list")
-    public ResponseEntity FindInoculationList(@RequestParam int memberNumber) throws Exception {
+    public ResponseEntity FindInoculationList(@RequestParam int memberNumber){
         logger.info("[아기 접종 이력 조회]");
         List<InoculationMemberVO> ListInoculation = inoculationService.findInoculationMember(memberNumber);
 
@@ -54,5 +51,36 @@ public class InoculationController {
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
+    }
+
+    /**
+     * 접종 이력 변경 하기
+     * @param inoculationMember
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity updateInoculationStatus(@RequestBody InoculationMemberVO inoculationMember){
+
+        boolean isSuccess = inoculationService.updateInoculationStatus(inoculationMember);
+        try{
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("접종 이력 변경 완료!")
+                    .data(null)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+
+        catch (Exception e){
+            logger.info(e.toString());
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message("예상치 못한 오류가 발생했습니다.")
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+
     }
 }
