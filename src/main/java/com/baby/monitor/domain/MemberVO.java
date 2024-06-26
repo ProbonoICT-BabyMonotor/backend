@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -23,7 +24,26 @@ public class MemberVO {
 
     private String memberPassword;
 
-    private Date memberBirth;
+    private LocalDate memberBirth;
 
     private String memberGender;
+
+    public MemberVO() {
+
+    }
+
+    public MemberVO(String memberName, String memberId, String memberPhone, String memberPassword, LocalDate memberBirth, String memberGender){
+        this.memberName = memberName;
+        this.memberId = memberId;
+        this.memberPhone = memberPhone;
+        this.memberPassword = memberPassword;
+        this.memberBirth = memberBirth;
+        this.memberGender = memberGender;
+    }
+
+    public void setMemberBirth(String memberBirth)  {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.memberBirth = LocalDate.parse(memberBirth, formatter);
+    }
+
 }

@@ -2,23 +2,19 @@ package com.baby.monitor.service;
 
 import com.baby.monitor.domain.MemberVO;
 import com.baby.monitor.persistance.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
-
 
     /***
      * 회원 가입하는 메소드 [비밀번호 인코딩]
@@ -47,10 +43,16 @@ public class MemberService {
         String memberId = member.getMemberId();
         MemberVO DB_member = memberRepository.findByMemberId(memberId);
 
+        // 아이디 미 일치
+        if (DB_member == null){
+            throw new IllegalArgumentException("[로그인] 아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 비밀번호 미 일치
         if (passwordEncoder.matches(member.getMemberPassword(), DB_member.getMemberPassword())) {
             return DB_member;
         } else {
-            throw new IllegalArgumentException("[로그인] 전화번호 또는 이메일이 일치하지 않습니다.");
+            throw new IllegalArgumentException("[로그인] 아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
 }
