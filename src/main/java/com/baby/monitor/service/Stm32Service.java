@@ -1,5 +1,6 @@
 package com.baby.monitor.service;
 
+import com.baby.monitor.domain.Stm32VO;
 import com.baby.monitor.persistance.Stm32Repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,10 @@ public class Stm32Service {
             throw new IllegalArgumentException("사용자의 IP 주소를 찾을 수 없습니다.");
         }
         return myIp;
+    }
+
+    public Stm32VO setMyIP(Stm32VO stm32){
+        return stm32JPA.save(stm32);
     }
 
 

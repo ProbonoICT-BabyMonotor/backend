@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "inoculation_list")
+@Table(name = "stm32")
 public class Stm32VO {
 
     @Id
