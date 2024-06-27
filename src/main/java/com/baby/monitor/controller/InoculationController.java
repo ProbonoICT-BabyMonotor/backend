@@ -1,8 +1,8 @@
 package com.baby.monitor.controller;
 
 import com.baby.monitor.DTO.InoculationDTO;
+import com.baby.monitor.DTO.RestResponse;
 import com.baby.monitor.domain.InoculationMemberVO;
-import com.baby.monitor.domain.RestResponse;
 import com.baby.monitor.service.InoculationService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

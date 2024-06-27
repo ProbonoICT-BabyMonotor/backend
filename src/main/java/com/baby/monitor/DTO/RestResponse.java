@@ -1,4 +1,4 @@
-package com.baby.monitor.domain;
+package com.baby.monitor.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
