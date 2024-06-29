@@ -67,7 +67,6 @@ public class HomeController {
             baby.setMemberNumber(signUpMember.getMemberNumber());
 
             babyService.signUpBaby(baby);
-            signUpMember.setMemberPassword("secret");
 
             // [DB] inoculation_member Table 초기화
             inoculationService.setUpInoculationList(member.getMemberNumber());

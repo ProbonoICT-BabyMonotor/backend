@@ -38,7 +38,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("현재 연결 상태가 좋지 않아요")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -61,7 +61,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("현재 연결 상태가 좋지 않아요")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -84,7 +84,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("현재 연결 상태가 좋지 않아요")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -107,7 +107,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("현재 연결 상태가 좋지 않아요")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -131,7 +131,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("현재 연결 상태가 좋지 않아요")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -154,7 +154,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("현재 연결 상태가 좋지 않아요")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -177,7 +177,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("현재 연결 상태가 좋지 않아요")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
