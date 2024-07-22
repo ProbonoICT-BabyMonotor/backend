@@ -8,12 +8,12 @@ import com.baby.monitor.service.BabyService;
 import com.baby.monitor.service.InoculationService;
 import com.baby.monitor.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/") // API의 기본 경로 설정
@@ -24,11 +24,9 @@ public class HomeController {
     private final InoculationService inoculationService;
     RestResponse<Object> restResponse = new RestResponse<>();
 
-    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberVO member) throws Exception {
-        logger.info("[로그인 요청] ID : " + member.getMemberId());
+        log.info("[로그인 요청] ID : " + member.getMemberId());
 
         // 성공적으로 로그인 했을때.
         try{
@@ -57,7 +55,7 @@ public class HomeController {
     @RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
     public ResponseEntity signup(@RequestBody SignupDTO signupDTO) throws Exception {
         try{
-            logger.info("[회원가입 요청] ",signupDTO.getMemberName());
+            log.info("[회원가입 요청] ",signupDTO.getMemberName());
 
             MemberVO member = signupDTO.getMemberVO();
             BabyVO baby = signupDTO.getBabyVO();

@@ -4,8 +4,7 @@ import com.baby.monitor.DTO.RestResponse;
 import com.baby.monitor.domain.Stm32VO;
 import com.baby.monitor.service.Stm32Service;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/stm32") // API의 기본 경로 설정
@@ -22,11 +22,9 @@ public class Stm32Controller {
 
     RestResponse<Object> restResponse = new RestResponse<>();
 
-    private static final Logger logger = LoggerFactory.getLogger(Stm32Controller.class);
-
     @GetMapping("/nowip")
     public ResponseEntity getNowIP(@RequestParam int memberNumber) throws Exception {
-        logger.info("[STM32 IP 조회] 회원 번호 : " + memberNumber);
+        log.info("[STM32 IP 조회] 회원 번호 : " + memberNumber);
 
         // 성공적으로 조회 했을 때
         try{
@@ -55,7 +53,7 @@ public class Stm32Controller {
 
     @PostMapping("/nowip")
     public ResponseEntity setNowIP(@RequestParam Stm32VO stm32) throws Exception {
-        logger.info("[STM32 IP 수정] 회원 번호 : " + stm32.getMemberNumber());
+        log.info("[STM32 IP 수정] 회원 번호 : " + stm32.getMemberNumber());
 
         // 성공적으로 조회 했을 때
         try{

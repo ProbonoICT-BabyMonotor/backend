@@ -3,18 +3,17 @@ package com.baby.monitor.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Getter
 @Setter
 @Entity
 @Table(name = "inoculation_member")
 public class InoculationMemberVO {
-    private static final Logger logger = LoggerFactory.getLogger(InoculationMemberVO.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,9 +57,9 @@ public class InoculationMemberVO {
         } else {
             babyBirth = babyBirth.plusMonths(Date);
         }
-        logger.info(babyBirth.toString());
-        logger.info(String.valueOf(Date));
-        logger.info(prieod);
+        log.info(babyBirth.toString());
+        log.info(String.valueOf(Date));
+        log.info(prieod);
         return babyBirth;
     }
 
