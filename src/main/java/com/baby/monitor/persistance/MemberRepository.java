@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends CrudRepository<MemberVO, Integer> {
     MemberVO findByMemberId(String memberId);
+    MemberVO findByMemberNumber(int memberNumber);
 }

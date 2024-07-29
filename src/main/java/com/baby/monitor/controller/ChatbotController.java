@@ -1,6 +1,7 @@
 package com.baby.monitor.controller;
 
 import com.baby.monitor.DTO.RestResponse;
+import com.baby.monitor.domain.ActingVO;
 import com.baby.monitor.service.ChatbotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +24,14 @@ public class ChatbotController {
     @GetMapping("/bed/backdraft")
     public ResponseEntity backDraft(@RequestParam int memberNumber){
         log.info("[챗봇] 역류 방지 기능 수행");
-//        chatbotService.RequestToStm(memberNumber, "backdraft");
+        ActingVO acting = chatbotService.RequestToStm(memberNumber, "backdraft");
 
         try{
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
-                    .data(null)
+                    .message("네. 역류 방지 기능을 수행할게요.")
+                    .data(acting)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
@@ -46,14 +47,14 @@ public class ChatbotController {
     @GetMapping("/bed/burp")
     public ResponseEntity burp(@RequestParam int memberNumber){
         log.info("[챗봇] 트름 유도 기능 수행");
-        chatbotService.RequestToStm(memberNumber, "burp");
+        ActingVO acting = chatbotService.RequestToStm(memberNumber, "burp");
 
         try{
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
                     .message("네. 아기 트름을 유도할게요.")
-                    .data(null)
+                    .data(acting)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
@@ -69,14 +70,14 @@ public class ChatbotController {
     @GetMapping("/bed/swing")
     public ResponseEntity swing(@RequestParam int memberNumber){
         log.info("[챗봇] 침대 스윙 기능 수행");
-        chatbotService.RequestToStm(memberNumber, "swing");
+        ActingVO acting = chatbotService.RequestToStm(memberNumber, "swing");
 
         try{
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
                     .message("네. 침대를 스윙할게요.")
-                    .data(null)
+                    .data(acting)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
@@ -92,14 +93,14 @@ public class ChatbotController {
     @GetMapping("/bed/fix")
     public ResponseEntity fix(@RequestParam int memberNumber){
         log.info("[챗봇] 침대 고정 기능 수행");
-        chatbotService.RequestToStm(memberNumber, "fix");
+        ActingVO acting = chatbotService.RequestToStm(memberNumber, "fix");
 
         try{
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
                     .message("네. 침대를 고정할게요.")
-                    .data(null)
+                    .data(acting)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
