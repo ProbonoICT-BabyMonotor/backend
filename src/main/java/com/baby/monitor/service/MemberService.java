@@ -55,4 +55,11 @@ public class MemberService {
             throw new IllegalArgumentException("[로그인] 아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
+
+    /**
+     * 회원 번호로 회원 이름 조회하는 메소드
+     */
+    public MemberVO findMemberName(int memberNumber) throws Exception{
+        return memberRepository.findByMemberNumber(memberNumber);
+    }
 }

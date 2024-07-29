@@ -4,6 +4,7 @@ import com.baby.monitor.DTO.RestResponse;
 import com.baby.monitor.DTO.SignupDTO;
 import com.baby.monitor.domain.BabyVO;
 import com.baby.monitor.domain.MemberVO;
+import com.baby.monitor.service.ActingService;
 import com.baby.monitor.service.BabyService;
 import com.baby.monitor.service.InoculationService;
 import com.baby.monitor.service.MemberService;
@@ -22,6 +23,7 @@ public class HomeController {
     private final MemberService memberService;
     private final BabyService babyService;
     private final InoculationService inoculationService;
+    private final ActingService actingService;
     RestResponse<Object> restResponse = new RestResponse<>();
 
     @PostMapping("/login")
@@ -61,8 +63,7 @@ public class HomeController {
             BabyVO baby = signupDTO.getBabyVO();
 
             // 회원가입 진행 후 비밀번호 암호화
-            MemberVO signUpMember = memberService.signUpMember(member);
-            baby.setMemberNumber(signUpMember.getMemberNumber());
+            baby.setMemberNumber(memberService.signUpMember(member).getMemberNumber());
 
             babyService.signUpBaby(baby);
 
@@ -73,7 +74,7 @@ public class HomeController {
                     .code(HttpStatus.CREATED.value())
                     .httpStatus(HttpStatus.CREATED)
                     .message("회원가입이 정상적으로 진행되었습니다.")
-                    .data(signUpMember)
+                    .data(memberService.signUpMember(member))
                     .build();
         }
 
@@ -82,6 +83,36 @@ public class HomeController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.FORBIDDEN.value())
                     .httpStatus(HttpStatus.FORBIDDEN)
+                    .message(e.getMessage())
+                    .build();
+        }
+        return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+    }
+
+    /**
+     * 침대 현 상태 조회하기
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = { "/status/now" }, method = RequestMethod.GET)
+    public ResponseEntity statusNow(@RequestParam int memberNumber) throws Exception {
+        try{
+            MemberVO searchMember = memberService.findMemberName(memberNumber);
+            log.info("[현재 침대 상태 확인 요청] ({}) {}", searchMember.getMemberId(), searchMember.getMemberName());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message(actingService.searchNowActing(memberNumber))
+                    .data(null)
+                    .build();
+        }
+
+        // 알 수 없는 오류 발생 시
+        catch (Exception e){
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                     .message(e.getMessage())
                     .build();
         }
