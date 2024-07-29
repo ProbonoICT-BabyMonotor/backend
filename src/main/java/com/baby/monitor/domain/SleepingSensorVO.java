@@ -16,6 +16,6 @@ public class SleepingSensorVO {
     private int heartRateAver;
     private int heartRateMin;
     private int heartRateMax;
-    private int breath;
-    private int weight;
+    private boolean breath; // True : 이상 없음, False : 이상 있음
+    private float weight;
 }

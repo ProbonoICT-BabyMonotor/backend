@@ -30,11 +30,7 @@ public class SleepingDTO {
     }
 
     private String changeTimeToString(LocalDateTime s){
-        // 포맷터 생성
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd(E) HH:mm", Locale.KOREAN);
-
         // 문자열로 포맷팅
-        return s.format(formatter);
-
+        return s.format(DateTimeFormatter.ofPattern("MM/dd(E) HH시 mm분", Locale.KOREAN));
     }
 }

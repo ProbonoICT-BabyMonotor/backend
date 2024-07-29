@@ -50,4 +50,31 @@ public class ActingVO {
 
         return actingTime.plusSeconds(EndTimeMap.get(actingName));
     }
+
+    // 현재 동작 여부 조회 시
+    public static String changeToStringInNowActing(String englishName){
+        Map<String, String> actingMap = new HashMap<>();
+
+        actingMap.put("rest", "동작 대기 중");
+        actingMap.put("backdraft", "역류 방지 기능 동작 중");
+        actingMap.put("burp", "트름 유도 기능 동작 중");
+        actingMap.put("swing", "스윙 기능 동작 중");
+        actingMap.put("spin", "뒤집기 기능 동작 중");
+        actingMap.put("fix", "침대 고정 기능 동작 중");
+
+        return actingMap.get(englishName);
+    }
+
+    // 취침 상세 여부 조회 시
+    public static String changeToStringInSleeping(String englishName){
+        Map<String, String> actingMap = new HashMap<>();
+
+        actingMap.put("backdraft", "역류 방지 기능 수행");
+        actingMap.put("burp", "트름 유도 기능 수행");
+        actingMap.put("swing", "스윙 기능 수행");
+        actingMap.put("spin", "뒤집기 기능 수행");
+        actingMap.put("fix", "침대 고정 기능 수헹");
+
+        return actingMap.get(englishName);
+    }
 }

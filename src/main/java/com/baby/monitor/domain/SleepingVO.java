@@ -18,5 +18,4 @@ public class SleepingVO {
     private LocalDateTime sleepingTime;
     private LocalDateTime sleepingEndTime;
     private String sleepingStatus;
-    private Boolean sensorError;
 }
