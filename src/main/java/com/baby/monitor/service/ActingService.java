@@ -30,6 +30,8 @@ public class ActingService {
     public String searchNowActing(int memberNumber){
         ActingVO acting = actingJPA.findByMemberNumber(memberNumber);
 
+        // TODO STM32 IP 조회해서 연결된 침대가 없음 → 침대 연결 프로세스 진행해도 좋을 듯
+
         // 기존에 동작이 없었다는 뜻
         if (acting == null){
             return actingMap.get("rest"); // 침대가 휴식 중 이라는 뜻

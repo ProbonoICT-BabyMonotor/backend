@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -110,10 +112,12 @@ public class HomeController {
 
         // 알 수 없는 오류 발생 시
         catch (Exception e){
+            log.error("[Error][현재 침대 상태 확인 요청] {}",e.getMessage());
+            log.info(Arrays.toString(e.getStackTrace()));
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
+                    .message("알 수 없는 오류 발생. 관리자 문의")
                     .build();
         }
         return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
