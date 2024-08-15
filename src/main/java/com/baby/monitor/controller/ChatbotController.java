@@ -24,9 +24,8 @@ public class ChatbotController {
     @GetMapping("/bed/backdraft")
     public ResponseEntity backDraft(@RequestParam int memberNumber){
         log.info("[챗봇] 역류 방지 기능 수행");
-        ActingVO acting = chatbotService.RequestToStm(memberNumber, "backdraft");
-
         try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "backdraft");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -38,7 +37,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 연결 상태가 좋지 않아요")
+                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -47,9 +46,8 @@ public class ChatbotController {
     @GetMapping("/bed/burp")
     public ResponseEntity burp(@RequestParam int memberNumber){
         log.info("[챗봇] 트름 유도 기능 수행");
-        ActingVO acting = chatbotService.RequestToStm(memberNumber, "burp");
-
         try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "burp");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -61,7 +59,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 연결 상태가 좋지 않아요")
+                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -70,9 +68,8 @@ public class ChatbotController {
     @GetMapping("/bed/swing")
     public ResponseEntity swing(@RequestParam int memberNumber){
         log.info("[챗봇] 침대 스윙 기능 수행");
-        ActingVO acting = chatbotService.RequestToStm(memberNumber, "swing");
-
         try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "swing");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -84,7 +81,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 연결 상태가 좋지 않아요")
+                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -93,9 +90,8 @@ public class ChatbotController {
     @GetMapping("/bed/fix")
     public ResponseEntity fix(@RequestParam int memberNumber){
         log.info("[챗봇] 침대 고정 기능 수행");
-        ActingVO acting = chatbotService.RequestToStm(memberNumber, "fix");
-
         try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "fix");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -107,7 +103,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 연결 상태가 좋지 않아요")
+                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -131,7 +127,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 연결 상태가 좋지 않아요")
+                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -154,7 +150,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 연결 상태가 좋지 않아요")
+                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -177,7 +173,7 @@ public class ChatbotController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 연결 상태가 좋지 않아요")
+                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
