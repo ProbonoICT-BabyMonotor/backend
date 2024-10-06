@@ -19,6 +19,6 @@ public class SensorsVO {
     private float sensorTemperature;
     private int sensorHeartRate;
     private boolean sensorBreath;
-    private float sensorWight;
+    private float sensorWeight;
     private LocalDateTime sensorDate;
 }
