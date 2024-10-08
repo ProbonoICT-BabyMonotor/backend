@@ -52,7 +52,8 @@ public class ActingVO {
     }
 
     // 현재 동작 여부 조회 시
-    public static String changeToStringInNowActing(String englishName){
+    public static String
+    changeToStringInNowActing(String englishName){
         Map<String, String> actingMap = new HashMap<>();
 
         actingMap.put("rest", "동작 대기 중");
