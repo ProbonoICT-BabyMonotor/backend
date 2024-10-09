@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface SensorRepository  extends CrudRepository<SensorsVO, Integer> {
     List<SensorsVO> findALLBySensorDateBetweenAndMemberNumber(LocalDateTime startOfDay, LocalDateTime endOfDay,  int memberNumber);
+
+    SensorsVO findFirstByMemberNumberOrderBySleepingNumberDesc(int memberNumber);
 }

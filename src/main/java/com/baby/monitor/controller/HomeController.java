@@ -4,8 +4,8 @@ import com.baby.monitor.DTO.RestResponse;
 import com.baby.monitor.DTO.SignupDTO;
 import com.baby.monitor.domain.BabyVO;
 import com.baby.monitor.domain.MemberVO;
-import com.baby.monitor.service.ActingService;
 import com.baby.monitor.service.BabyService;
+import com.baby.monitor.service.ChatbotService;
 import com.baby.monitor.service.InoculationService;
 import com.baby.monitor.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class HomeController {
     private final MemberService memberService;
     private final BabyService babyService;
     private final InoculationService inoculationService;
-    private final ActingService actingService;
+    private final ChatbotService chatbotService;
     RestResponse<Object> restResponse = new RestResponse<>();
 
     @PostMapping("/login")
@@ -105,7 +105,7 @@ public class HomeController {
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
-                    .message(actingService.searchNowActing(memberNumber))
+                    .message(chatbotService.searchNowActing(memberNumber))
                     .data(null)
                     .build();
         }

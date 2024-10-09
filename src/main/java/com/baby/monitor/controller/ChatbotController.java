@@ -3,6 +3,7 @@ package com.baby.monitor.controller;
 import com.baby.monitor.DTO.RestResponse;
 import com.baby.monitor.domain.ActingVO;
 import com.baby.monitor.service.ChatbotService;
+import com.baby.monitor.service.SensorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,35 +20,62 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatbotController {
 
     private final ChatbotService chatbotService;
+    private final SensorService sensorService;
     RestResponse<Object> restResponse = new RestResponse<>();
 
-    @GetMapping("/bed/backdraft")
-    public ResponseEntity backDraft(@RequestParam int memberNumber){
+    @GetMapping("/bed/backdraft/on")
+    public ResponseEntity backDraftOn(@RequestParam int memberNumber){
         log.info("[챗봇] 역류 방지 기능 수행");
         try{
-            ActingVO acting = chatbotService.RequestToStm(memberNumber, "backdraft");
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "backdraft/on");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
-                    .message("네. 역류 방지 기능을 수행할게요.")
+                    .message("네. 역류 방지 기능을 수행할게요. 최대 20초 정도 소요될 수 있어요.")
                     .data(acting)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+            
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
+                    .message(result)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
     }
 
-    @GetMapping("/bed/burp")
-    public ResponseEntity burp(@RequestParam int memberNumber){
+    @GetMapping("/bed/backdraft/off")
+    public ResponseEntity backDraftOff(@RequestParam int memberNumber){
+        log.info("[챗봇] 역류 방지 기능 종료");
+        try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "backdraft/off");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("네. 역류 방지 기능을 종료할게요. 최대 20초 정도 소요될 수 있어요.")
+                    .data(acting)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message(result)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
+    @GetMapping("/bed/burp/on")
+    public ResponseEntity burpOn(@RequestParam int memberNumber){
         log.info("[챗봇] 트름 유도 기능 수행");
         try{
-            ActingVO acting = chatbotService.RequestToStm(memberNumber, "burp");
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "burp/on");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -56,20 +84,46 @@ public class ChatbotController {
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
+                    .message(result)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
     }
 
-    @GetMapping("/bed/swing")
+    @GetMapping("/bed/burp/off")
+    public ResponseEntity burpOff(@RequestParam int memberNumber){
+        log.info("[챗봇] 트름 유도 기능 종료");
+        try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "burp/off");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("네. 트림 유도 기능을 종료할게요.")
+                    .data(acting)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message(result)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
+    @GetMapping("/bed/swing/on")
     public ResponseEntity swing(@RequestParam int memberNumber){
         log.info("[챗봇] 침대 스윙 기능 수행");
         try{
-            ActingVO acting = chatbotService.RequestToStm(memberNumber, "swing");
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "swing/on");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -78,10 +132,36 @@ public class ChatbotController {
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
+                    .message(result)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
+    @GetMapping("/bed/swing/off")
+    public ResponseEntity swingOn(@RequestParam int memberNumber){
+        log.info("[챗봇] 침대 스윙 기능 종료");
+        try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "swing/off");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("네. 침대 스윙을 멈출게요.")
+                    .data(acting)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message(result)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -100,10 +180,12 @@ public class ChatbotController {
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
+                    .message(result)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -124,33 +206,65 @@ public class ChatbotController {
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
+                    .message(result)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
     }
 
-    @GetMapping("/sensor/babystatus")
-    public ResponseEntity babyStatus(@RequestParam int memberNumber){
-        log.info("[챗봇] 아기 상태 확인 기능 수행");
-        // TODO 센서 연동 필요
-        
+    @GetMapping("/sensor/babystatus/temperature")
+    public ResponseEntity babyStatusTemperature(@RequestParam int memberNumber){
+        log.info("[챗봇] 아기 체온 상태 확인 기능 수행");
         try{
-            restResponse = RestResponse.builder()
-                    .code(HttpStatus.OK.value())
-                    .httpStatus(HttpStatus.OK)
-                    .message("")
-                    .data(null)
-                    .build();
-            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+            Object temperature = sensorService.checkBabyTemperature(memberNumber);
+            if (temperature == null) {
+                restResponse = RestResponse.builder()
+                        .code(HttpStatus.NOT_FOUND.value())
+                        .httpStatus(HttpStatus.NOT_FOUND)
+                        .message("아기가 침대에서 자고 있지 않아요")
+                        .data(null)
+                        .build();
+                return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+            }
+
+            Float Temperature = (float) temperature;
+            if(Temperature >= 37.5){
+                restResponse = RestResponse.builder()
+                        .code(HttpStatus.PARTIAL_CONTENT.value())
+                        .httpStatus(HttpStatus.PARTIAL_CONTENT)
+                        .message("아기 체온에 이상이 생겼어요")
+                        .data(temperature)
+                        .build();
+                return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+            } else if (Temperature < 37.5) {
+                restResponse = RestResponse.builder()
+                        .code(HttpStatus.OK.value())
+                        .httpStatus(HttpStatus.OK)
+                        .message("아기 체온이 정상이에요")
+                        .data(temperature)
+                        .build();
+                return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+            } else {
+                restResponse = RestResponse.builder()
+                        .code(HttpStatus.NOT_FOUND.value())
+                        .httpStatus(HttpStatus.NOT_FOUND)
+                        .message("아기가 침대에서 자고 있지 않아요")
+                        .data(null)
+                        .build();
+                return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+            }
         } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
+                    .message(result)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
@@ -170,13 +284,34 @@ public class ChatbotController {
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
             restResponse = RestResponse.builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("현재 침대 연결 상태가 좋지 않아요. 조금 다시 시도해주세요!")
+                    .message(result)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }
     }
 
+    public String ExceptionMessage(String e){
+        // 입력 문자열을 공백 기준으로 나누기
+        String[] words = e.toString().split(" ");
+
+        // 세 번째 단어부터 출력
+        StringBuilder result = new StringBuilder();
+        for (int i = 2; i < words.length; i++) {
+            result.append(words[i]).append(" ");
+        }
+
+        // 결과 출력
+        log.info(result.toString().trim());
+
+        if (result.toString().trim().substring(0,3).equals("I/O")){
+            return "침대와의 연결이 불안정합니다. 같은 네트워크에 있는지 확인해주세요.";
+        }
+
+        return result.toString().trim();
+    }
 }

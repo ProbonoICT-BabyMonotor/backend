@@ -1,7 +1,9 @@
 package com.baby.monitor.service;
 
 import com.baby.monitor.domain.SensorsVO;
+import com.baby.monitor.domain.SleepingVO;
 import com.baby.monitor.persistance.SensorRepository;
+import com.baby.monitor.persistance.SleepingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SensorService {
     private final SensorRepository sensorJPA;
+    private final SleepingRepository sleepingJPA;
 
     public Map<String, List<SensorsVO>> findBySensorDateAndMemberNumber(String sensorDateString, int memberNumber) {
         String[] dateParts = sensorDateString.split("_");
@@ -55,4 +58,19 @@ public class SensorService {
                         (oldValue, newValue) -> oldValue,
                         LinkedHashMap::new));  // 순서를 유지하는 LinkedHashMap으로 변환
     }
+
+    public Float checkBabyTemperature(int memberNumber){
+        SleepingVO sleep1 = sleepingJPA.findFirstBySleepingEndTimeIsNullAndMemberNumberOrderBySleepingNumberDesc(memberNumber);
+
+        // 기존에 취침 하고 있는 아기가 있다면
+        if (sleep1 != null) {
+            float temperature = sensorJPA.findFirstByMemberNumberOrderBySleepingNumberDesc(memberNumber).getSensorTemperature();
+            return temperature;
+        }
+        // 없다면 새로 만들기
+        else {
+            return null;
+        }
+    }
+
 }

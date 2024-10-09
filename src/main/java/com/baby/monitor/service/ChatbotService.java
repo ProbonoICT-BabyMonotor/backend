@@ -175,11 +175,21 @@ public class ChatbotService {
 
     /**
      * 동작 추가하기
+     * @Memo : 이때 취침 중인 아기 이력 조회하기
      */
     public ActingVO addActing(ActingVO acting) {
-        if(sleepingJPA.findFirstBySleepingEndTimeBeforeAndMemberNumberOrderBySleepingNumberDesc(LocalDateTime.now(), acting.getMemberNumber()) == null){
-            new SleepingVO();
+        SleepingVO sleep1 = sleepingJPA.findFirstBySleepingEndTimeIsNullAndMemberNumberOrderBySleepingNumberDesc(acting.getMemberNumber());
+
+        // 기존에 취침 하고 있는 아기가 있다면
+        if (sleep1 != null) {
+            acting.setSleepingNumber(sleep1.getSleepingNumber());
+        } 
+        // 없다면 새로 만들기
+        else {
+            SleepingVO sleepingVO = new SleepingVO(acting.getMemberNumber());
+            acting.setSleepingNumber(sleepingVO.getSleepingNumber());
         }
+
         return actingJPA.save(acting);
     }
 }
