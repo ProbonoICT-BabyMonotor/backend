@@ -57,7 +57,7 @@ public class InoculationController {
      * @param inoculationMember
      * @return
      */
-    @PutMapping("")
+    @PutMapping("/list")
     public ResponseEntity updateInoculationStatus(@RequestBody InoculationMemberVO inoculationMember){
         try{
             boolean isSuccess = inoculationService.updateInoculationStatus(inoculationMember);

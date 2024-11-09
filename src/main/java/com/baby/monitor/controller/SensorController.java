@@ -1,5 +1,6 @@
 package com.baby.monitor.controller;
 
+import com.baby.monitor.DTO.ReceiveSensorDTO;
 import com.baby.monitor.DTO.RestResponse;
 import com.baby.monitor.DTO.SensorRequestDTO;
 import com.baby.monitor.domain.SensorsVO;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -29,7 +29,7 @@ public class SensorController {
         log.info("[센서 데이터 조회]");
         // 성공적으로 로그인 했을때.
         try{
-            Map<String, List<SensorsVO>> sensors = sensorService.findBySensorDateAndMemberNumber(sensorRequestDTO.getSensorDate(),sensorRequestDTO.getMemberNumber());
+            Map<String, SensorsVO> sensors = sensorService.findBySensorDateAndMemberNumber(sensorRequestDTO.getSensorDate(),sensorRequestDTO.getMemberNumber());
 
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
@@ -47,6 +47,30 @@ public class SensorController {
                     .code(HttpStatus.NOT_FOUND.value())
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message(e.getMessage())
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity receiveSensor(@RequestBody ReceiveSensorDTO receiveSensorDTO){
+        log.info("[챗봇] 센서 데이터 저장하기");
+        SensorsVO sensorsVO = sensorService.addSensorData(receiveSensorDTO);
+        try{
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("센서 데이터가 잘 저장되었습니다!")
+                    .data(sensorsVO)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            log.info(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message("오류가 발생하였습니다.")
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
         }

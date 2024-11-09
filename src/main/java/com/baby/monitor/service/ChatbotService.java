@@ -29,8 +29,8 @@ public class ChatbotService {
         // RestTemplate 생성 및 타임아웃 설정
         RestTemplate restTemplate = new RestTemplate();
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(20000);  // 연결 타임아웃 설정 (20초)
-        factory.setReadTimeout(20000);     // 읽기 타임아웃 설정 (20초)
+        factory.setConnectTimeout(6000);  // 연결 타임아웃 설정 (4초)
+        factory.setReadTimeout(6000);     // 읽기 타임아웃 설정 (4초)
         restTemplate.setRequestFactory(factory);
 
         // 현재 STM32 연결 가능한 URL
@@ -42,7 +42,23 @@ public class ChatbotService {
             // 현재 기능 동작 중임
             // 종료 버튼을 눌렀는데, 현재 실행중인 동작이 아니라면?
             if (command.substring(command.length() - 3).equals("off") && nowActingVO != null && nowActingVO.getActingName() != command.substring(0, command.length() - 4)) {
-                throw new IllegalStateException("현재 침대가 다른 동작은 하고 있어서, 이 기능을 종료할 수 없어요.");
+                nowActingVO.setActingEndTime(LocalDateTime.now());
+                actingJPA.save(nowActingVO);
+
+                // STM32로 요청
+                ResponseEntity<RestResponse> response = restTemplate.getForEntity(url, RestResponse.class);
+
+                log.info(response.getStatusCode().toString());
+                // 상태 코드 확인
+                if (response.getStatusCode() != HttpStatusCode.valueOf(200)) {
+                    throw new IllegalStateException("침대 연결 상태가 좋지 않아요. 잠시후 다시 실행해보세요");
+                }
+
+                // 실제로 통신이 완료되어 동작 중
+                ActingVO acting = new ActingVO(memberNumber, command.substring(0, command.length() - 3));
+                addActing(acting);
+
+                return acting;
             }
 
             // 현재 기능 동작하고 있는 것과 동일한 종료 요청
@@ -191,5 +207,9 @@ public class ChatbotService {
         }
 
         return actingJPA.save(acting);
+    }
+
+    public ActingVO backBaby(int memberNumber){
+        return RequestToStm(memberNumber, "backdraft/on");
     }
 }

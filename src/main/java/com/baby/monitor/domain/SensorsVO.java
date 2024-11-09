@@ -21,4 +21,23 @@ public class SensorsVO {
     private boolean sensorBreath;
     private float sensorWeight;
     private LocalDateTime sensorDate;
+    private float sensorAreaTemp; // 주변 온도
+    private float sensorAreaHumi; // 주변 습도
+
+
+    public SensorsVO(int memberNumber, float sensorTemperature, float sensorAreaTemp, float sensorAreaHumi) {
+        this.memberNumber = memberNumber;
+        this.sensorTemperature = sensorTemperature;
+        this.sensorAreaTemp = sensorAreaTemp;
+        this.sensorAreaHumi = sensorAreaHumi;
+
+        // TODO 여기서는 주작이므로;//  추후 수정할 것!!
+        this.sensorHeartRate = 80;
+        this.sensorBreath = true;
+        this.sensorWeight = 0;
+    }
+
+    public SensorsVO() {
+
+    }
 }

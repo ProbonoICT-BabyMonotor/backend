@@ -167,6 +167,54 @@ public class ChatbotController {
         }
     }
 
+    @GetMapping("/bed/flip/on")
+    public ResponseEntity flip(@RequestParam int memberNumber){
+        log.info("[챗봇] 침대 뒤집기 기능 수행");
+        try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "flip/on");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("네. 침대를 뒤집기할게요.")
+                    .data(acting)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message(result)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
+    @GetMapping("/bed/flip/off")
+    public ResponseEntity flipOff(@RequestParam int memberNumber){
+        log.info("[챗봇] 침대 뒤집기 기능 종료");
+        try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "flip/off");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("네. 침대 뒤집기을 멈출게요.")
+                    .data(acting)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message(result)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
     @GetMapping("/bed/fix")
     public ResponseEntity fix(@RequestParam int memberNumber){
         log.info("[챗봇] 침대 고정 기능 수행");
@@ -219,7 +267,6 @@ public class ChatbotController {
 
     @GetMapping("/sensor/babystatus/temperature")
     public ResponseEntity babyStatusTemperature(@RequestParam int memberNumber){
-        log.info("[챗봇] 아기 체온 상태 확인 기능 수행");
         try{
             Object temperature = sensorService.checkBabyTemperature(memberNumber);
             if (temperature == null) {
@@ -233,6 +280,7 @@ public class ChatbotController {
             }
 
             Float Temperature = (float) temperature;
+            log.info(String.valueOf(Temperature));
             if(Temperature >= 37.5){
                 restResponse = RestResponse.builder()
                         .code(HttpStatus.PARTIAL_CONTENT.value())
@@ -270,20 +318,30 @@ public class ChatbotController {
         }
     }
 
-    @GetMapping("/sensor/surroundings")
-    public ResponseEntity surroundings(@RequestParam int memberNumber){
-        log.info("[챗봇] 주변 환경 체크 기능 수행");
-        // TODO 센서 연동 필요
-
-        try{
-            restResponse = RestResponse.builder()
-                    .code(HttpStatus.OK.value())
-                    .httpStatus(HttpStatus.OK)
-                    .message("")
-                    .data(null)
-                    .build();
-            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
-        } catch(Exception e) {
+    // 챗봇 응답 버전용
+    @GetMapping("/sensor/babystatus/now")
+    public ResponseEntity babyStatusNow(@RequestParam int memberNumber){
+        log.info("[챗봇] 아기 현 상태 확인");
+        try {
+            String message = sensorService.checkBabyStatus(memberNumber);
+            if (message == null){
+                restResponse = RestResponse.builder()
+                        .code(HttpStatus.NOT_FOUND.value())
+                        .httpStatus(HttpStatus.NOT_FOUND)
+                        .message("아기가 침대에서 자고 있지 않아요")
+                        .data(null)
+                        .build();
+                return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+            } else {
+                restResponse = RestResponse.builder()
+                        .code(HttpStatus.OK.value())
+                        .httpStatus(HttpStatus.OK)
+                        .message(message)
+                        .data(null)
+                        .build();
+                return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+            }
+            } catch(Exception e) {
             String result = ExceptionMessage(e.toString());
 
             restResponse = RestResponse.builder()

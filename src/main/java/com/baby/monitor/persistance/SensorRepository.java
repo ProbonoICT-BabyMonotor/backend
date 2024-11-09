@@ -9,6 +9,9 @@ import java.util.List;
 
 @Repository
 public interface SensorRepository  extends CrudRepository<SensorsVO, Integer> {
+
+    SensorsVO save(SensorsVO sensorsVO);
+
     List<SensorsVO> findALLBySensorDateBetweenAndMemberNumber(LocalDateTime startOfDay, LocalDateTime endOfDay,  int memberNumber);
 
     SensorsVO findFirstByMemberNumberOrderBySleepingNumberDesc(int memberNumber);

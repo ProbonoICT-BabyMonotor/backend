@@ -57,7 +57,10 @@ public class SleepingController {
 
         try{
             SleepingDetailDTO sleepings = sleepingService.searchSleepingDetail(sleepingNumber);
-
+            if (sleepings.getSleepingEndTime().substring(0,5).equals("12/31")){
+                sleepings.setSleepingStatus("😴 취침 중");
+                sleepings.setSleepingEndTime("                                   ");
+            }
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
