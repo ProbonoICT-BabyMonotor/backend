@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 @Repository
 public interface ActingRepository extends CrudRepository<ActingVO, Integer> {
-    ActingVO findByMemberNumber(int memberNumber);
+    // 제일 마지막 값을 가져오기
+    ActingVO findFirstByMemberNumberOrderByActingNumberDesc(int memberNumber);
     ArrayList<ActingVO> findAllBySleepingNumber(int sleepingNumber);
+
+
 }

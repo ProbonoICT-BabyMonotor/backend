@@ -18,4 +18,16 @@ public class SleepingVO {
     private LocalDateTime sleepingTime;
     private LocalDateTime sleepingEndTime;
     private String sleepingStatus;
+
+    //  새롭게 취침하는 객체 생성
+    public SleepingVO(int memberNumber) {
+        this.memberNumber = memberNumber;
+        this.sleepingTime = LocalDateTime.now();
+        this.sleepingEndTime = null;
+        this.sleepingStatus = "😴 취침 중";
+    }
+
+    public SleepingVO() {
+
+    }
 }

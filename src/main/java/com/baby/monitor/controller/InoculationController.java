@@ -30,7 +30,6 @@ public class InoculationController {
         try{
             List<InoculationMemberVO> ListInoculation = inoculationService.findInoculationMember(memberNumber);
             List<InoculationDTO> ListDTO = inoculationService.changeTODTO(ListInoculation);
-
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -57,7 +56,7 @@ public class InoculationController {
      * @param inoculationMember
      * @return
      */
-    @PutMapping("")
+    @PutMapping("/list")
     public ResponseEntity updateInoculationStatus(@RequestBody InoculationMemberVO inoculationMember){
         try{
             boolean isSuccess = inoculationService.updateInoculationStatus(inoculationMember);

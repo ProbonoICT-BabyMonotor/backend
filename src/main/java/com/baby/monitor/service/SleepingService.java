@@ -13,6 +13,7 @@ import com.baby.monitor.persistance.SleepingSensorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -62,8 +63,17 @@ public class SleepingService {
         SleepingVO sleepingVO = sleepingJPA.findBySleepingNumber(sleepingNumber);
         if (sleepingVO == null){
             throw new NullPointerException("취침 이력이 존재하지 않습니다.");
+        } else if (sleepingVO.getSleepingEndTime() == null){
+            sleepingVO.setSleepingEndTime(LocalDateTime.MAX);
         }
         ArrayList<ActingVO> actingVOS = actingJPA.findAllBySleepingNumber(sleepingNumber);
+
+        int count = 1;
+        for(ActingVO actingVO: actingVOS){
+            actingVO.setActingNumber(count++);
+        }
+
+        Collections.reverse(actingVOS);
 
         SleepingDetailDTO sleepingDetailDTO = new SleepingDetailDTO(sleepingVO);
 

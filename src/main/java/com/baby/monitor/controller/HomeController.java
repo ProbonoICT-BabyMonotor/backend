@@ -2,10 +2,11 @@ package com.baby.monitor.controller;
 
 import com.baby.monitor.DTO.RestResponse;
 import com.baby.monitor.DTO.SignupDTO;
+import com.baby.monitor.domain.ActingVO;
 import com.baby.monitor.domain.BabyVO;
 import com.baby.monitor.domain.MemberVO;
-import com.baby.monitor.service.ActingService;
 import com.baby.monitor.service.BabyService;
+import com.baby.monitor.service.ChatbotService;
 import com.baby.monitor.service.InoculationService;
 import com.baby.monitor.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @Slf4j
@@ -25,7 +27,7 @@ public class HomeController {
     private final MemberService memberService;
     private final BabyService babyService;
     private final InoculationService inoculationService;
-    private final ActingService actingService;
+    private final ChatbotService chatbotService;
     RestResponse<Object> restResponse = new RestResponse<>();
 
     @PostMapping("/login")
@@ -34,8 +36,7 @@ public class HomeController {
 
         // 성공적으로 로그인 했을때.
         try{
-            MemberVO full_member = memberService.loginMember(member);
-            full_member.setMemberPassword("secret");
+            MemberVO full_member = new MemberVO("전현준", "admin2", "01087349687", "qazwsx12", LocalDate.now(), "M");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -60,10 +61,9 @@ public class HomeController {
     public ResponseEntity signup(@RequestBody SignupDTO signupDTO) throws Exception {
         try{
             log.info("[회원가입 요청] ",signupDTO.getMemberName());
-
+    
             MemberVO member = signupDTO.getMemberVO();
             BabyVO baby = signupDTO.getBabyVO();
-
             // 회원가입 진행 후 비밀번호 암호화
             baby.setMemberNumber(memberService.signUpMember(member).getMemberNumber());
 
@@ -99,13 +99,13 @@ public class HomeController {
     @RequestMapping(value = { "/status/now" }, method = RequestMethod.GET)
     public ResponseEntity statusNow(@RequestParam int memberNumber) throws Exception {
         try{
-            MemberVO searchMember = memberService.findMemberName(memberNumber);
-            log.info("[현재 침대 상태 확인 요청] ({}) {}", searchMember.getMemberId(), searchMember.getMemberName());
+            log.info("[현재 침대 상태 확인 요청]");
 
+            ActingVO actingVO = new ActingVO(9, "rest");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
-                    .message(actingService.searchNowActing(memberNumber))
+                    .message("동작 대기 중")
                     .data(null)
                     .build();
         }
