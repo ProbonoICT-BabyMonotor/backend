@@ -26,7 +26,7 @@ public class SleepingController {
     @GetMapping("/list")
     public ResponseEntity findSleepingList(@RequestParam int memberNumber) throws Exception{
         log.info("[취침 이력 조회] {}",memberNumber);
-
+        memberNumber = 9;
         try{
             ArrayList<SleepingDTO> sleepings = sleepingService.searchSleepingList(memberNumber);
 
@@ -54,7 +54,6 @@ public class SleepingController {
     @GetMapping("/detail")
     public ResponseEntity findSleepingDetail(@RequestParam int sleepingNumber) throws Exception{
         log.info("[취침 이력 상세 조회] {}",sleepingNumber);
-
         try{
             SleepingDetailDTO sleepings = sleepingService.searchSleepingDetail(sleepingNumber);
             if (sleepings.getSleepingEndTime().substring(0,5).equals("12/31")){

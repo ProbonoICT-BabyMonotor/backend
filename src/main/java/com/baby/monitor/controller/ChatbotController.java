@@ -167,11 +167,35 @@ public class ChatbotController {
         }
     }
 
-    @GetMapping("/bed/flip/on")
-    public ResponseEntity flip(@RequestParam int memberNumber){
-        log.info("[챗봇] 침대 뒤집기 기능 수행");
+    @GetMapping("/bed/flip/right/on")
+    public ResponseEntity flipRight(@RequestParam int memberNumber){
+        log.info("[챗봇] 침대 작은 엑추에이터 뒤집기 기능 수행");
         try{
-            ActingVO acting = chatbotService.RequestToStm(memberNumber, "flip/on");
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "flip/right/on");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("네. 침대를 뒤집기할게요.")
+                    .data(acting)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message(result)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
+    @GetMapping("/bed/flip/left/on")
+    public ResponseEntity flipLeft(@RequestParam int memberNumber){
+        log.info("[챗봇] 침대 왼쪽 엑추에이터 뒤집기 기능 수행");
+        try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "flip/left/on");
             restResponse = RestResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -200,6 +224,30 @@ public class ChatbotController {
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
                     .message("네. 침대 뒤집기을 멈출게요.")
+                    .data(acting)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        } catch(Exception e) {
+            String result = ExceptionMessage(e.toString());
+
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message(result)
+                    .build();
+            return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());
+        }
+    }
+
+    @GetMapping("/bed/flip/down")
+    public ResponseEntity flipDown(@RequestParam int memberNumber){
+        log.info("[챗봇] 침대 작은 엑추에이터 뒤집기 기능 수행");
+        try{
+            ActingVO acting = chatbotService.RequestToStm(memberNumber, "flip/down");
+            restResponse = RestResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("네. 침대를 내리고 있어요")
                     .data(acting)
                     .build();
             return new ResponseEntity<>(restResponse, restResponse.getHttpStatus());

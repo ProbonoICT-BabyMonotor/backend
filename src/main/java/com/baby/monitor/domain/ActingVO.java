@@ -27,7 +27,7 @@ public class ActingVO {
         this.memberNumber = memberNumber;
         this.actingName = actingName;
         this.actingTime = LocalDateTime.now();
-        this.actingEndTime = calculateEndTime(actingName, actingTime);
+        this.actingEndTime = LocalDateTime.now();
     }
 
     public ActingVO() {
@@ -43,10 +43,12 @@ public class ActingVO {
         // 이름 : Seconds
         Map<String, Integer> EndTimeMap = new HashMap<>();
         EndTimeMap.put("backdraft", 1200); // 역류
-        EndTimeMap.put("burp", 1200); // 트름
-        EndTimeMap.put("swing", 1200); // 스윙
+        EndTimeMap.put("burp", 10); // 트름
+        EndTimeMap.put("swing", 10); // 스윙
         EndTimeMap.put("spin", 30); // 뒤집기
         EndTimeMap.put("fix", 20); // 침대 고정
+        EndTimeMap.put("flip/right", 30); // 작은 액추에이터 뒤집기
+        EndTimeMap.put("flip/left", 30); // 작은 액추에이터 뒤집기
 
         return actingTime.plusSeconds(EndTimeMap.get(actingName));
     }
@@ -62,6 +64,7 @@ public class ActingVO {
         actingMap.put("swing", "스윙 기능 동작 중");
         actingMap.put("spin", "뒤집기 기능 동작 중");
         actingMap.put("fix", "침대 고정 기능 동작 중");
+        actingMap.put("flip/little", "침대 뒤집기 기능 동작 중");
 
         return actingMap.get(englishName);
     }
@@ -75,6 +78,7 @@ public class ActingVO {
         actingMap.put("swing", "스윙 기능 수행");
         actingMap.put("spin", "뒤집기 기능 수행");
         actingMap.put("fix", "침대 고정 기능 수헹");
+        actingMap.put("flip/little", "침대 뒤집기 기능 수헹");
 
         return actingMap.get(englishName);
     }

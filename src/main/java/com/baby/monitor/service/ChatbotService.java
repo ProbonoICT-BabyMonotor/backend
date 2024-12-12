@@ -34,95 +34,30 @@ public class ChatbotService {
         restTemplate.setRequestFactory(factory);
 
         // 현재 STM32 연결 가능한 URL
-        String url = stm32JPA.findByMemberNumber(memberNumber).getStm32Ip() + "/" + command;
+        String url = "http://192.168.0.9:333/" + command;
 
         try {
-            ActingVO nowActingVO = searchNowActingVO(memberNumber);
+            ActingVO nowActingVO = null;
 
-            // 현재 기능 동작 중임
-            // 종료 버튼을 눌렀는데, 현재 실행중인 동작이 아니라면?
-            if (command.substring(command.length() - 3).equals("off") && nowActingVO != null && nowActingVO.getActingName() != command.substring(0, command.length() - 4)) {
+            if(command.substring(command.length() - 3).equals("off") && nowActingVO != null){
                 nowActingVO.setActingEndTime(LocalDateTime.now());
-                actingJPA.save(nowActingVO);
-
-                // STM32로 요청
-                ResponseEntity<RestResponse> response = restTemplate.getForEntity(url, RestResponse.class);
-
-                log.info(response.getStatusCode().toString());
-                // 상태 코드 확인
-                if (response.getStatusCode() != HttpStatusCode.valueOf(200)) {
-                    throw new IllegalStateException("침대 연결 상태가 좋지 않아요. 잠시후 다시 실행해보세요");
-                }
-
-                // 실제로 통신이 완료되어 동작 중
-                ActingVO acting = new ActingVO(memberNumber, command.substring(0, command.length() - 3));
-                addActing(acting);
-
-                return acting;
+                // actingJPA.save(nowActingVO);
             }
 
-            // 현재 기능 동작하고 있는 것과 동일한 종료 요청
-            else if (command.substring(command.length() - 3).equals("off") && nowActingVO != null && nowActingVO.getActingName() == command.substring(0, command.length() - 4)) {
-                RequestTempToStm(memberNumber); // 중단하기 위한 요청
-                nowActingVO.setActingEndTime(LocalDateTime.now());
-                return actingJPA.save(nowActingVO);
+            // STM32로 요청
+            ResponseEntity<RestResponse> response = restTemplate.getForEntity(url, RestResponse.class);
+
+            log.info(response.getStatusCode().toString());
+            // 상태 코드 확인
+            if (response.getStatusCode() != HttpStatusCode.valueOf(200)) {
+                throw new IllegalStateException("침대 연결 상태가 좋지 않아요. 잠시후 다시 실행해보세요");
             }
 
-            // 현재 동작중이 아님
-            else if (command.substring(command.length() - 3).equals("off") && nowActingVO == null) {
-                throw new IllegalStateException("현재 동작중인 기능이 없어요.");
-            }
+            // 실제로 통신이 완료되어 동작 중
+            ActingVO acting = new ActingVO(memberNumber, command.substring(0, command.length() - 3));
+            // addActing(acting);
 
-            // 기능 동작 중이고, 동작 수행 버튼 클릭
-            else if (command.substring(command.length() - 2).equals("on") && nowActingVO != null && nowActingVO.getActingName() != command.substring(0, command.length() - 3)) {
-                RequestTempToStm(memberNumber); // 중단하기 위한 요청
-                nowActingVO.setActingEndTime(LocalDateTime.now());
-                actingJPA.save(nowActingVO);
-
-                // STM32로 요청
-                ResponseEntity<RestResponse> response = restTemplate.getForEntity(url, RestResponse.class);
-
-                log.info(response.getStatusCode().toString());
-                // 상태 코드 확인
-                if (response.getStatusCode() != HttpStatusCode.valueOf(200)) {
-                    throw new IllegalStateException("침대 연결 상태가 좋지 않아요. 잠시후 다시 실행해보세요");
-                }
-
-                // 실제로 통신이 완료되어 동작 중
-                ActingVO acting = new ActingVO(memberNumber, command.substring(0, command.length() - 3));
-                addActing(acting);
-
-                return acting;
-            }
-
-            // 기능 동작 중이고, 동일한 동작 수행 버튼 클릭
-            else if (command.substring(command.length() - 2).equals("on") && nowActingVO != null && nowActingVO.getActingName() == command.substring(0, command.length() - 3)) {
-                throw new IllegalStateException("이미 이 기능을 수행 중이에요.");
-            }
-            // 기능 동작 중이고, 동일한 동작 수행 버튼 클릭
-            else if (command.substring(command.length() - 2).equals("on") && nowActingVO != null && nowActingVO.getActingName() != command.substring(0, command.length() - 3)) {
-                throw new IllegalStateException("다른 기능을 수행중이에요. 이전 기능을 종료하고 다시 사용해주세요");
-            }
-
-            // 현재 동작중인 기능이 없을 때는?
-            else if (command.substring(command.length() - 2).equals("on") && nowActingVO == null) {
-                // STM32로 요청
-                ResponseEntity<RestResponse> response = restTemplate.getForEntity(url, RestResponse.class);
-
-                log.info(response.getStatusCode().toString());
-                // 상태 코드 확인
-                if (response.getStatusCode() != HttpStatusCode.valueOf(200)) {
-                    throw new IllegalStateException("침대 연결 상태가 좋지 않아요. 잠시후 다시 실행해보세요");
-                }
-
-                // 실제로 통신이 완료되어 동작 중
-                ActingVO acting = new ActingVO(memberNumber, command.substring(0, command.length() - 3));
-                addActing(acting);
-
-                return acting;
-            } else {
-                throw new IllegalStateException("알 수 없는 오류가 발생했어요.");
-            }
+            return acting;
         } catch (Exception e) {
             log.info(Arrays.toString(e.getStackTrace()));
             // 타임아웃 또는 기타 예외 발생 시 처리
@@ -141,7 +76,7 @@ public class ChatbotService {
         restTemplate.setRequestFactory(factory);
 
         // 현재 STM32 연결 가능한 URL
-        String url = stm32JPA.findByMemberNumber(memberNumber).getStm32Ip() + "/done";
+        String url = "http://192.168.0.9:333/done";
 
         try {
             ResponseEntity<RestResponse> response = restTemplate.getForEntity(url, RestResponse.class);
